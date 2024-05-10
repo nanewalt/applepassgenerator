@@ -371,7 +371,7 @@ class ApplePass(object):
         return (
             pkcs7.PKCS7SignatureBuilder()
             .set_data(manifest.encode("UTF-8"))
-            .add_signer(cert, priv_key, hashes.SHA1())
+            .add_signer(cert, priv_key, hashes.SHA256())
             .add_certificate(wwdr_cert)
             .sign(serialization.Encoding.DER, options)
         )
