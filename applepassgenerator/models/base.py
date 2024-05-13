@@ -1,12 +1,23 @@
 from applepassgenerator.utils import Field
 
+# Full reference found here: https://developer.apple.com/documentation/walletpasses/passfields
 class PassInformation(object):
+    """ Base class for all pass models.
+
+    This class and its children provide methods to edit the specific pass style's
+    attributes such as headers, fields, and barcodes. To edit top level keys such as
+    background or description, call methods from the ApplePass class.
+    """
+
     def __init__(self):
         self.header_fields = []
         self.primary_fields = []
         self.secondary_fields = []
         self.back_fields = []
         self.auxiliary_fields = []
+
+
+    # Setters
 
     def add_header_field(self, key, value, label):
         self.header_fields.append(Field(key, value, label))
@@ -23,6 +34,8 @@ class PassInformation(object):
     def add_auxiliary_field(self, key, value, label):
         self.auxiliary_fields.append(Field(key, value, label))
 
+
+    # Construct pass.json content
     def json_dict(self):
         d = {}
         if self.header_fields:

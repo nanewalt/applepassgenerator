@@ -13,6 +13,7 @@ from cryptography.hazmat.primitives.serialization import pkcs7
 
 from applepassgenerator.utils import BarcodeFormat
 
+# The full reference can be found here: https://developer.apple.com/documentation/walletpasses/pass
 class ApplePass(object):
     def __init__(
         self,
@@ -51,7 +52,7 @@ class ApplePass(object):
         self.format_version = 1
 
         # Visual Appearance Keys
-        self.background_color = None  # Optional. Background color of the pass
+        self.background_color = None # Optional. Background color of the pass
         self.foreground_color = None  # Optional. Foreground color of the pass,
         self.label_color = None  # Optional. Color of the label text
         self.logo_text = None  # Optional. Text displayed next to the logo
@@ -93,8 +94,7 @@ class ApplePass(object):
         self.voided = None
 
         self.pass_information = pass_information
-
-
+    
     # Adds file to the file array
     def add_file(self, name, fd):
         self._files[name] = fd.read()
@@ -102,6 +102,7 @@ class ApplePass(object):
     # Creates the actual .pkpass file
     def create(self, certificate, key, wwdr_certificate, password, zip_file=None):
         pass_json = self._create_pass_json()
+        print(pass_json)
         manifest = self._create_manifest(pass_json)
         signature = self._create_signature_crypto(
             manifest, certificate, key, wwdr_certificate, password
@@ -180,6 +181,7 @@ class ApplePass(object):
             "suppressStripShine": self.suppress_strip_shine,
             self.pass_information.jsonname: self.pass_information.json_dict(),
         }
+
         # barcodes have 2 fields, 'barcode' is legacy so limit it to the legacy formats, 'barcodes' supports all
         if self.barcode:
             original_formats = [
